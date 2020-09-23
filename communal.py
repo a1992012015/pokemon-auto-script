@@ -49,7 +49,7 @@ def restart_game():
     send(ns_A)
     sleep(1.5)
     send(ns_A)
-    sleep(17)
+    sleep(18)
     send(ns_A)
     sleep(10)
 
@@ -172,14 +172,16 @@ def back_game():
 
 # 简单的修改时间操作
 def change_time(callback):
-    send(ns_A)
+    t_move = 0.03
+    t_click = 0.07
+    send(ns_A, t_click)
     sleep(0.4)
     for c in range(0, 2):
-        send(ns_RIGHT)
-        sleep(0.1)
+        send(ns_RIGHT, t_click)
+        sleep(t_move)
     callback()
     for c in range(0, 3):
-        send(ns_RIGHT)
-        sleep(0.1)
+        send(ns_RIGHT, t_click)
+        sleep(t_move)
     send(ns_A)
     sleep(0.5)
