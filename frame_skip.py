@@ -1,108 +1,79 @@
-from main import *
+from communal import *
 
 print(f'Delay for {args.delay} seconds.')
-print(f'Pls check make sure the date is 1 Jan and the cursor is at the right end.')
+print(f'开始自动跑帧任务！')
 sleep(args.delay)
 
 
-# send(ns.L3)
-
-def frameskip():
-    t_move = 0.03
-    t_click = 0.07
-    for i in range(0, 3):
-        send(ns_LEFT, t_click)
-        sleep(t_move)
-    send(ns_UP, t_click)
-    sleep(t_move)
-    for i in range(0, 3):
-        send(ns_RIGHT, t_click)
-        sleep(t_move)
-    send(ns_A, t_click)
-    sleep(0.11)
-    send(ns_A, t_click)
-    sleep(0.1)
-    # send(ns_A, t_click)
-    # sleep(t_move)
-
-
-def savegame():
-    # --- back to game
-    sleep(1)
-    send(ns_HOME)
-    sleep(3)
+# 保存游戏
+def save_game():
+    # 返回游戏
     send(ns_HOME)
     sleep(2)
-    # --- insurance
-    send(ns_B)
-    sleep(1)
-    # --- save
+    send(ns_HOME)
+    sleep(2)
+    # 存档
     send(ns_X)
-    sleep(3)
+    sleep(2)
     send(ns_R)
-    sleep(3)
+    sleep(2)
     send(ns_A)
     sleep(4)
-    # --- back to time pannel
-    send(ns_HOME)
-    sleep(3)
-    send(ns_DOWN)
-    sleep(0.1)
-    for i in range(0, 4):
-        send(ns_RIGHT)
-        sleep(0.1)
+    # 返回时间界面
+    go_change_time()
     send(ns_A)
-    sleep(0.4)
-    send(ns_DOWN, 1.8)
-    # for i in range(0,15):
-    #    send(ns_DOWN)
-    #    sleep(0.1)
-    send(ns_A)
-    sleep(0.1)
-    for i in range(0, 4):
-        send(ns_DOWN, 0.1)
-        sleep(0.1)
-    send(ns_A)
-    sleep(0.4)
-    for i in range(0, 2):
-        send(ns_DOWN, 0.1)
-        sleep(0.1)
-    send(ns_A)
-    sleep(0.4)
+    sleep(0.03)
     for i in range(0, 5):
-        send(ns_RIGHT, 0.1)
-        sleep(0.1)
+        send(ns_RIGHT, 0.05)
+        sleep(0.03)
+    send(ns_A)
+    sleep(0.03)
+
+
+# 切换时间
+def frame_skip():
+    t_click = 0.06
+    send(ns_A, t_click)
+    sleep(0.1)
+
+    send('LX MIN', t_click)
+    send('RX MIN', t_click)
+    send('HAT LEFT', t_click)
+
+    send('LY MIN', t_click)
+
+    send('LX MAX', t_click)
+    send('RX MAX', t_click)
+    send('HAT RIGHT', t_click)
+
+    sleep(0.03)
+    send(ns_A, t_click)
+    sleep(0.11)
 
 
 try:
-    frame_counter = 1
+    frame_counter = 1  # 因为测帧的问题提前一帧
     date_counter = 1
     time_0 = time.time()
     send(ns_RIGHT, 0.1)
     sleep(0.1)
+    start_time = time.time()
     while frame_counter < args.frame:
-        start_time = time.time()
         date_counter += 1
-        frameskip()
+        frame_skip()
         if date_counter <= 31:
             frame_counter += 1
         else:
             date_counter = 1
-        if frame_counter % args.frame_save == 0:
-            savegame()
-        dtime = round(time.time() - start_time, 2)
         now = time.strftime("%H:%M:%S", time.localtime())
-        time_remain = time.strftime("%H:%M:%S", time.localtime(time.time() + dtime * (args.frame - frame_counter)))
-        print('[ {:} ] current frame: {:}, date: {:}, remaining frames: {:}, estimated finishing time: {:}'.format(
-            now,
-            frame_counter,
-            date_counter,
-            args.frame - frame_counter,
-            time_remain
-        ))
+        remain = args.frame - frame_counter
+        consume_time = time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))
+        print(f'[ {now} ] 当前帧: {frame_counter}, 日期: {date_counter}, 剩余帧: {remain}， 花费时间: {consume_time}')
+        if frame_counter % args.frame_save == 0:
+            save_game()
     send('RELEASE')
     ser.close()
-    print('finished. time consumed: {:}'.format(time.strftime("%H:%M:%S", time.gmtime(time.time() - time_0))))
+    print(f'finished. time consumed: {time.strftime("%H:%M:%S", time.gmtime(time.time() - start_time))}')
 
 except KeyboardInterrupt:
     send('RELEASE')
