@@ -13,7 +13,7 @@ sleep(0.5)
 send(ns_DOWN)
 sleep(0.5)
 
-waiting_time = 200
+waiting_time = 250
 print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 开始捕获 等待: {waiting_time / 2}s')
 try:
     for t in range(0, waiting_time):

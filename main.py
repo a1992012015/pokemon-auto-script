@@ -29,8 +29,8 @@ parser.add_argument('--egg_cycle', '-ec', type=int, default=3)
 # --- auto den hunting related ---
 parser.add_argument('--connection_time', '-ct', type=int, default=10)
 parser.add_argument('--recruit_duration', '-rd', type=int, default=90)
-parser.add_argument('--battle_duration', '-bd', type=int, default=40)
-parser.add_argument('--raid_password', '-rp', type=int, default=4523)
+parser.add_argument('--battle_duration', '-bd', type=int, default=30)
+parser.add_argument('--raid_password', '-rp', type=int, default=45230000)
 parser.add_argument('--exit_mode', '-em', default='reload')
 # --- other setting ---
 parser.add_argument('--delay', '-d', type=int, default=3)

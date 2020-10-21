@@ -5,7 +5,7 @@ from main import *
 def battle_preparation():
     print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 链接网络 等待: {args.connection_time}')
     connect_internet(args.connection_time)
-    if len(str(args.raid_password)) == 4:
+    if len(str(args.raid_password)) == 8:
         print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 设置密码 密码: {args.raid_password}')
     else:
         print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 没有密码')
@@ -72,34 +72,29 @@ def set_password(psw):
     wake()
     send(ns_A)
     sleep(6)
-    if len(str(psw)) == 4:
-        a = psw // 1000
-        b = (psw - a * 1000) // 100
-        c = (psw - a * 1000 - b * 100) // 10
-        d = psw - a * 1000 - b * 100 - c * 10
+    password_len = len(str(psw))
+    if password_len == 8:
+        a = psw // 10000000
+        b = (psw - a * 10000000) // 1000000
+        c = (psw - a * 10000000 - b * 1000000) // 100000
+        d = (psw - a * 10000000 - b * 1000000 - c * 100000) // 10000
+        e = (psw - a * 10000000 - b * 1000000 - c * 100000 - d * 10000) // 1000
+        f = (psw - a * 10000000 - b * 1000000 - c * 100000 - d * 10000 - e * 1000) // 100
+        g = (psw - a * 10000000 - b * 1000000 - c * 100000 - d * 10000 - e * 1000 - f * 100) // 10
+        h = (psw - a * 10000000 - b * 1000000 - c * 100000 - d * 10000 - e * 1000 - f * 100 - g * 10)
         send(ns_START)
         sleep(1)
-        codes = [1, a, b, c, d]
-        for num in range(0, 4):
+        codes = [1, a, b, c, d, e, f, g, h]
+        for num in range(0, password_len):
             nx, ny = num_dist(codes[num], codes[num + 1])
-            if nx > 0:
-                for i in range(0, nx):
-                    send(ns_RIGHT)
-                    sleep(0.02)
-            elif nx < 0:
-                for i in range(0, -nx):
-                    send(ns_LEFT)
-                    sleep(0.02)
-            if ny > 0:
-                for i in range(0, ny):
-                    send(ns_DOWN)
-                    sleep(0.02)
-            elif ny < 0:
-                for i in range(0, -ny):
-                    send(ns_UP)
-                    sleep(0.02)
-            send(ns_A)
-            sleep(0.1)
+            if codes[num] == 0:
+                move_y(ny)
+                move_x(nx)
+            else:
+                move_x(nx)
+                move_y(ny)
+            send(ns_A, 0.07)
+            sleep(0.03)
         send(ns_START)
         sleep(1)
         send(ns_A)
@@ -107,11 +102,35 @@ def set_password(psw):
 
 
 def num_dist(a, b):
-    cols = [1, 2, 3, 1, 2, 3, 1, 2, 3]
-    rows = [1, 1, 1, 2, 2, 2, 3, 3, 3]
-    ny = rows[b - 1] - rows[a - 1]
-    nx = cols[b - 1] - cols[a - 1]
+    cols = [2, 1, 2, 3, 1, 2, 3, 1, 2, 3]
+    rows = [4, 1, 1, 1, 2, 2, 2, 3, 3, 3]
+    ny = rows[b] - rows[a]
+    nx = cols[b] - cols[a]
     return nx, ny
+
+
+# 移动y轴
+def move_y(y):
+    if y > 0:
+        for i in range(0, y):
+            send(ns_DOWN)
+            sleep(0.02)
+    elif y < 0:
+        for i in range(0, -y):
+            send(ns_UP)
+            sleep(0.02)
+
+
+# 移动x轴
+def move_x(x):
+    if x > 0:
+        for i in range(0, x):
+            send(ns_RIGHT)
+            sleep(0.02)
+    elif x < 0:
+        for i in range(0, -x):
+            send(ns_LEFT)
+            sleep(0.02)
 
 
 # 招募
