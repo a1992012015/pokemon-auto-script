@@ -12,8 +12,12 @@ send(ns_A)
 sleep(0.5)
 send(ns_DOWN)
 sleep(0.5)
+send(ns_A)
+sleep(0.5)
+send(ns_A)
+sleep(28)
 
-waiting_time = 250
+waiting_time = 90
 print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 开始捕获 等待: {waiting_time / 2}s')
 try:
     for t in range(0, waiting_time):
@@ -22,8 +26,17 @@ try:
             print(f'\r[{time.strftime("%H:%M:%S", time.localtime())}] 当前时间 {nt}')
         else:
             print(f'\r[{time.strftime("%H:%M:%S", time.localtime())}] 当前时间 {nt}', end='')
-        send(ns_A)
-        sleep(0.5)
+        if nt < 10:
+            send(ns_A)
+            sleep(0.5)
+            send(ns_LEFT)
+            sleep(0.5)
+        else:
+            send(ns_A)
+            sleep(0.5)
+            send(ns_A)
+            sleep(0.5)
+
     print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 捕获完成请检查捕获情况')
 
 except KeyboardInterrupt:

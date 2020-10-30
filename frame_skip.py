@@ -52,7 +52,7 @@ def frame_skip():
 
 
 try:
-    frame_counter = 1  # 因为测帧的问题提前一帧
+    frame_counter = 0  # 因为测帧的问题提前一帧
     date_counter = 1
     time_0 = time.time()
     send(ns_RIGHT, 0.1)
