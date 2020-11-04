@@ -153,7 +153,7 @@ def wake():
     count = 5
     while count > 0:
         count = count - 1
-        send(ns_B)
+        send(ns_R)
         sleep(0.5)
 
 

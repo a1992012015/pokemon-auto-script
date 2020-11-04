@@ -24,6 +24,8 @@ parser.add_argument('--hatch_mode', '-hm', default='normal')
 # --- frameskip related ---
 parser.add_argument('--frame', '-f', type=int, default=200)
 parser.add_argument('--frame_save', '-fs', type=int, default=400)
+# --- auto capture individual ---
+parser.add_argument('--restart', '-rs', default='True')
 # --- egg collection related ---
 parser.add_argument('--egg_cycle', '-ec', type=int, default=3)
 # --- auto den hunting related ---

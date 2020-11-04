@@ -11,7 +11,7 @@ def change_one_time():
 
 
 def change_back_time():
-    for t in range(0, 3):
+    for t in range(0, check_count):
         send(ns_DOWN)
         sleep(0.1)
 
@@ -21,8 +21,9 @@ restart_game()
 
 wake()
 print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 开始SL')
-for i in range(0, 3):
-    if i < 2:
+check_count = 3
+for i in range(0, check_count):
+    if i < check_count - 1:
         print(f'\r[{time.strftime("%H:%M:%S", time.localtime())}] 现在第 {i + 1} 帧', end='')
     else:
         print(f'\r[{time.strftime("%H:%M:%S", time.localtime())}] 现在第 {i + 1} 帧')
