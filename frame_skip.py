@@ -46,9 +46,9 @@ def frame_skip():
     send('RX MAX', t_click)
     send('HAT RIGHT', t_click)
 
-    sleep(0.03)
+    sleep(0.15)  # 可能导致每次跑帧失败的原因，在回到"OK"位置的时候指针还没到但是"A"已经按下（修复方法：延长等待的时间）
     send(ns_A, t_click)
-    sleep(0.11)
+    sleep(0.1)
 
 
 try:
