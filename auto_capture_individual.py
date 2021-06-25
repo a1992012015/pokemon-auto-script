@@ -19,7 +19,7 @@ sleep(0.5)
 send(ns_A)
 sleep(28)
 
-waiting_time = 80
+waiting_time = args.battle_time
 print(f'[{time.strftime("%H:%M:%S", time.localtime())}] 开始捕获 等待: {waiting_time / 2}s')
 try:
     for t in range(0, waiting_time):
